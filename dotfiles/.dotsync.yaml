@@ -1,0 +1,3 @@
+dotfiles:
+  .tmux.conf: ~/.tmux.conf
+  .vim: ~/.vim
