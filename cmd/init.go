@@ -12,11 +12,9 @@ import (
 
 var (
   cfgFile string
-  dirPath string = "./dotfiles"
-  defaultSettings = map[string]string {
-    ".tmux.conf": "~/.tmux.conf",
-    ".vim": "~/.vim",
-  }
+  dirPath string
+  home    string
+  v       = viper.NewWithOptions(viper.KeyDelimiter("::"))
 )
 
 var initCmd = &cobra.Command{
@@ -29,17 +27,19 @@ var initCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(initCmd)
+  rootCmd.AddCommand(initCmd)
+
+  // Define directory for configs
+  home, err := os.UserHomeDir()
+  if err != nil {
+    fmt.Println(err)
+  }
+  dirPath = home + "/code/go/src/dotsync/dotfiles/"
 }
 
 func initCommand() {
-	viper.AutomaticEnv() // read in environment variables that match
-  fmt.Println(os.UserHomeDir())
-  //home, err := os.UserHomeDir()
-  //fmt.Printf("Home dir is -> %s \n", home)
-  //cobra.CheckErr(err)
 	initDir()
-	initConfig()
+	InitConfig(&cfgFile)
 }
 
 func initDir() {
@@ -49,7 +49,7 @@ func initDir() {
     fmt.Printf("Directory created at %v", dirPath)
 	} else {
 		var choice string
-		fmt.Println("Directory already exists, do you want to rewite? [Y/n]")
+		fmt.Println("Directory already exists, do you want to rewrite? [Y/n]")
 		switch fmt.Scan(&choice); strings.ToLower(choice) {
 		case "y":
 			err := os.RemoveAll(dirPath)
@@ -64,23 +64,18 @@ func initDir() {
 	}
 }
 
-func initConfig() {
-  viper.AddConfigPath(dirPath)
-  viper.SetConfigType("yaml")
-  viper.SetConfigName(".dotsync")
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
+func InitConfig(c *string) {
+  v.AddConfigPath(dirPath)
+  v.SetConfigType("yaml")
+  v.SetConfigName(".dotsync")
+	if err := v.ReadInConfig(); err == nil {
+		fmt.Fprintln(os.Stderr, "Using config file:", v.ConfigFileUsed())
 	} else {
-
-    viper.SetDefault("dotfiles", defaultSettings)
-
-    err := viper.SafeWriteConfig()
+    err := v.SafeWriteConfig()
     if err != nil {
-    fmt.Println("Error with writing config file")
+      fmt.Println("Error with writing config file")
     }
-    cfgFile = viper.ConfigFileUsed()
-    fmt.Println(viper.ConfigFileUsed())
-    fmt.Println(viper.AllSettings())
   }
+  *c = v.ConfigFileUsed()
 }
 
