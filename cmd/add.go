@@ -20,7 +20,7 @@ var addCmd = &cobra.Command{
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		addFile(args[0])
+		  addFile(args)
 	},
 }
 
@@ -28,18 +28,23 @@ func init() {
 	rootCmd.AddCommand(addCmd)
 }
 
-func addFile(c string) {
+func addFile(files []string) {
 	InitConfig(&cfgFile)
 
-	cfgAbsPath, err := filepath.Abs(c)
-	if err != nil {
-		fmt.Println("Error with filepath")
-	}
+  for _, file := range files {
+	  cfgAbsPath, err := filepath.Abs(file)
+	  if err != nil {
+		  fmt.Println("Error with filepath")
+	  }
 
-  pathSlice := strings.Split(cfgAbsPath, "/")
-  pathSlice = append(pathSlice[3:])
-  filePath := strings.Join(pathSlice, "/")
+    pathSlice := strings.Split(cfgAbsPath, "/")
+    pathSlice = append(pathSlice[3:])
+    filePath := strings.Join(pathSlice, "/")
 
-	v.Set(c, filePath)
-	v.WriteConfig()
+    fileNameSlice := strings.Split(file, "/")
+    fileName := fileNameSlice[len(fileNameSlice) - 1]
+
+	  v.Set(fileName, filePath)
+	  v.WriteConfig()
+  }
 }
