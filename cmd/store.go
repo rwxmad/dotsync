@@ -4,9 +4,7 @@ import (
 	"fmt"
   "errors"
   "os"
-  "strings"
 
-	"github.com/spf13/viper"
 	"github.com/spf13/cobra"
 )
 
@@ -34,7 +32,7 @@ func Store() {
 
 func getPaths() {
   InitConfig(&cfgFile)
-  err := viper.Unmarshal(&pathsMap)
+  err := v.Unmarshal(&pathsMap)
   if err != nil {
     fmt.Println("Error while reading configuration file")
   }
@@ -43,11 +41,9 @@ func getPaths() {
   }else {
     storeFiles()
   }
-  fmt.Println(pathsMap)
 }
 
 func storeFiles() {
-  fmt.Println(len(pathsMap))
   for name, path := range pathsMap{
     symlinkFiles(name, path)
   }
@@ -58,15 +54,14 @@ func symlinkFiles(name, path string) {
   if err != nil {
     fmt.Println(err)
   }
-  p := homePath + "/" + path
-  fmt.Println("current path", p)
 
-  l := strings.Split(p, "/")
-  //l = strings.Join(l[len(l) - 1], "")
-  fmt.Println(p, dirPath, l)
-  //moveFile(p, l) 
+  oldPath := homePath + "/" + path
+  newPath := dirPath + name
 
-  //fmt.Printf("Symlink %s at path: %s --> created\n", name, path)
+  moveFile(oldPath, newPath)
+  os.Symlink(newPath, oldPath)
+
+  fmt.Printf("# Symlink to the %s at the path: %s --> was created\n", name, path)
 }
 
 func moveFile(oldLocation, newLocation string) {
