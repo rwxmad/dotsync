@@ -4,6 +4,7 @@ import (
 	"fmt"
   "errors"
   "os"
+  "log"
 
 	"github.com/spf13/cobra"
 )
@@ -34,7 +35,7 @@ func getPaths() {
   InitConfig(&cfgFile)
   err := v.Unmarshal(&pathsMap)
   if err != nil {
-    fmt.Println("Error while reading configuration file")
+    log.Fatal("Error while reading configuration file")
   }
   if len(pathsMap) == 0 {
     fmt.Println(ErrConfigEmpty)
@@ -61,7 +62,7 @@ func symlinkFiles(name, path string) {
   moveFile(oldPath, newPath)
   os.Symlink(newPath, oldPath)
 
-  fmt.Printf("# Symlink to the %s at the path: %s --> was created\n", name, path)
+  fmt.Printf("# [Symlink to the %s at the path: %s] ===> was created\n", name, path)
 }
 
 func moveFile(oldLocation, newLocation string) {

@@ -6,6 +6,8 @@ import (
 	"os"
 	"strings"
 
+  "github.com/themadnesstony/dotsync/internal/sync"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -39,6 +41,7 @@ func init() {
 
 func initCommand() {
 	initDir()
+  sync.InitGit()
 	InitConfig(&cfgFile)
 }
 
@@ -49,18 +52,21 @@ func initDir() {
     fmt.Printf("Directory created at %v", dirPath)
 	} else {
 		var choice string
-		fmt.Println("Directory already exists, do you want to rewrite? [Y/n]")
+		fmt.Print("Directory already exists, do you want to rewrite? [Y/n] ")
 		switch fmt.Scan(&choice); strings.ToLower(choice) {
 		case "y":
 			err := os.RemoveAll(dirPath)
 			if err != nil {
 				log.Fatal("Can't remove a directory")
 			}
-			dir := os.Mkdir(dirPath, os.FileMode(0777))
-			log.Println(dir)
+			err = os.Mkdir(dirPath, os.FileMode(0777))
+      if err != nil {
+        log.Fatal("Can't create a directory")
+      }
 		case "n":
 			fmt.Println("Cancelled")
 		}
+    //sync.InitGit()
 	}
 }
 

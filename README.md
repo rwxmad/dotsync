@@ -7,7 +7,7 @@
 | Command      | Flags | Arguments | Description |
 | ------------ | ----- | --------- | --------- |
 | dotsync init | - | - |Initialize a directory for dot files and create configuration file with configs list|
-| dotsync add | - | file |Adds the specified file to the dotsync config|
+| dotsync add | - | files or paths of files |Adds the specified file to the dotsync config|
 | dotsync store | - | - |Move configuration files to sync folder and create symlinks|
 
 
