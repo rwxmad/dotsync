@@ -17,7 +17,7 @@ Paths must be specified from the home directory, you do not need to register the
 The config file should have the following structure:
 
 ```yaml 
-file_name: absolute/path/to/file
+file_name: path/from/home/dir
 # example
 .vimrc: .vimrc
 .tmux.conf: .tmux.conf
