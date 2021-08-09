@@ -2,6 +2,8 @@
 
 ### CLI for managing and syncing your dotfiles
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/themadnesstony/dotsync)](https://goreportcard.com/report/github.com/themadnesstony/dotsync)
+
 ### Commands
 
 | Command      | Flags | Arguments | Description |
@@ -23,3 +25,4 @@ file_name: path/from/home/dir
 .tmux.conf: .tmux.conf
 .editorconfig: code/.editorconfig
 ```
+
