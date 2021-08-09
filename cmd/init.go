@@ -69,6 +69,7 @@ func initDir() {
 	}
 }
 
+// Init config file
 func InitConfig(c *string) {
 	v.AddConfigPath(dirPath)
 	v.SetConfigType("yaml")
