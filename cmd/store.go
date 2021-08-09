@@ -6,6 +6,7 @@ import (
   "os"
   "log"
 
+  "github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
 
@@ -60,9 +61,12 @@ func symlinkFiles(name, path string) {
   newPath := dirPath + name
 
   moveFile(oldPath, newPath)
-  os.Symlink(newPath, oldPath)
-
-  fmt.Printf("# [Symlink to the %s at the path: %s] ===> was created\n", name, path)
+  err = os.Symlink(newPath, oldPath)
+  if err != nil {
+    fmt.Printf("# [Symlink to the %s at the path: %s ]: %s\n", name, path, color.RedString("Error"))
+  }else {
+    fmt.Printf("# [Symlink to the %s at the path: %s ]: %s\n", name, path, color.GreenString("Done"))
+  }
 }
 
 func moveFile(oldLocation, newLocation string) {
