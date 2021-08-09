@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
   "os"
+  "bufio"
 
 	"github.com/fatih/color"
 	"github.com/go-git/go-git/v5"
@@ -56,7 +57,8 @@ func Add(w *git.Worktree) {
 func Commit(w *git.Worktree, r *git.Repository) {
 	var commitMessage string
 	fmt.Print("Enter commit message: ")
-	fmt.Scan(&commitMessage)
+  inputReader := bufio.NewReader(os.Stdin)
+  commitMessage, _ = inputReader.ReadString('\n')
 	commit, err := w.Commit(commitMessage, &git.CommitOptions{})
 	if err != nil {
 		log.Fatal(err)
