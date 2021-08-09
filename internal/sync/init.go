@@ -7,9 +7,9 @@ import (
 	"github.com/go-git/go-git/v5/config"
 )
 
-func InitGit() {
+func InitGit(path string) {
 
-	r, err := git.PlainInit("./dotfiles", false)
+	r, err := git.PlainInit(path, false)
 	if err != nil {
 		log.Fatal(err)
 	}

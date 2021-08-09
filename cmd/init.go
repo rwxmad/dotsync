@@ -31,7 +31,7 @@ var initCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(initCmd)
 
-	// Define directory for configs
+	// Define directory for config files
 	home, err := os.UserHomeDir()
 	if err != nil {
 		fmt.Println(err)
@@ -41,7 +41,7 @@ func init() {
 
 func initCommand() {
 	initDir()
-	sync.InitGit()
+	sync.InitGit(dirPath)
 	InitConfig(&cfgFile)
 }
 
@@ -69,7 +69,7 @@ func initDir() {
 	}
 }
 
-// InitConfig function 
+// InitConfig function
 func InitConfig(c *string) {
 	v.AddConfigPath(dirPath)
 	v.SetConfigType("yaml")

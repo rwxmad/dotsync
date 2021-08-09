@@ -6,6 +6,8 @@ import (
 	"log"
 	"os"
 
+	"github.com/themadnesstony/dotsync/internal/sync"
+
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
@@ -47,11 +49,12 @@ func getPaths() {
 
 func storeFiles() {
 	for name, path := range pathsMap {
-		symlinkFiles(name, path)
+		symlinkFile(name, path)
 	}
+	sync.Sync(dirPath)
 }
 
-func symlinkFiles(name, path string) {
+func symlinkFile(name, path string) {
 	homePath, err := os.UserHomeDir()
 	if err != nil {
 		fmt.Println(err)
@@ -60,12 +63,16 @@ func symlinkFiles(name, path string) {
 	oldPath := homePath + "/" + path
 	newPath := dirPath + name
 
-	moveFile(oldPath, newPath)
-	err = os.Symlink(newPath, oldPath)
-	if err != nil {
-		fmt.Printf("# [Symlink to the %s at the path: %s ]: %s\n", name, path, color.RedString("Error"))
+	if _, err := os.Stat(newPath); !os.IsNotExist(err) {
+		fmt.Printf("# [Symlink to the %s at the path: %s ]: %s\n", name, newPath, color.RedString("Exist"))
 	} else {
-		fmt.Printf("# [Symlink to the %s at the path: %s ]: %s\n", name, path, color.GreenString("Done"))
+		moveFile(oldPath, newPath)
+		err = os.Symlink(newPath, oldPath)
+		if err != nil {
+			fmt.Printf("# [Symlink to the %s at the path: %s ]: %s\n", name, newPath, color.RedString("Error"))
+		} else {
+			fmt.Printf("# [Symlink to the %s at the path: %s ]: %s\n", name, newPath, color.GreenString("Done"))
+		}
 	}
 }
 

@@ -11,8 +11,8 @@ import (
 	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
 )
 
-func Sync() {
-	r, err := git.PlainOpen("./dotfiles")
+func Sync(path string) {
+	r, err := git.PlainOpen(path)
 	if err != nil {
 		log.Fatal(err)
 	}
