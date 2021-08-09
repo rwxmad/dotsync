@@ -1,10 +1,10 @@
 package cmd
 
 import (
-//	"fmt"
+	//	"fmt"
 
 	"github.com/spf13/cobra"
-  "github.com/themadnesstony/dotsync/internal/sync"
+	"github.com/themadnesstony/dotsync/internal/sync"
 )
 
 var syncCmd = &cobra.Command{
@@ -18,12 +18,12 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		//fmt.Println("sync called")
-    sync.Sync()
+		sync.Sync()
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(syncCmd)
 
-  //sync.InitGit()
+	//sync.InitGit()
 }

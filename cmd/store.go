@@ -1,21 +1,21 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
-  "errors"
-  "os"
-  "log"
+	"log"
+	"os"
 
-  "github.com/fatih/color"
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
 
 var storeCmd = &cobra.Command{
 	Use:   "store",
 	Short: "Store, symlink and sync dotfiles",
-	Long: ``,
+	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-    Store()
+		Store()
 	},
 }
 
@@ -24,55 +24,54 @@ func init() {
 }
 
 var (
-  pathsMap = make(map[string]string)
-  ErrConfigEmpty = errors.New("Config file is empty")
+	pathsMap       = make(map[string]string)
+	ErrConfigEmpty = errors.New("Config file is empty")
 )
 
 func Store() {
-  getPaths()
+	getPaths()
 }
 
 func getPaths() {
-  InitConfig(&cfgFile)
-  err := v.Unmarshal(&pathsMap)
-  if err != nil {
-    log.Fatal("Error while reading configuration file")
-  }
-  if len(pathsMap) == 0 {
-    fmt.Println(ErrConfigEmpty)
-  }else {
-    storeFiles()
-  }
+	InitConfig(&cfgFile)
+	err := v.Unmarshal(&pathsMap)
+	if err != nil {
+		log.Fatal("Error while reading configuration file")
+	}
+	if len(pathsMap) == 0 {
+		fmt.Println(ErrConfigEmpty)
+	} else {
+		storeFiles()
+	}
 }
 
 func storeFiles() {
-  for name, path := range pathsMap{
-    symlinkFiles(name, path)
-  }
+	for name, path := range pathsMap {
+		symlinkFiles(name, path)
+	}
 }
 
 func symlinkFiles(name, path string) {
-  homePath, err := os.UserHomeDir()
-  if err != nil {
-    fmt.Println(err)
-  }
+	homePath, err := os.UserHomeDir()
+	if err != nil {
+		fmt.Println(err)
+	}
 
-  oldPath := homePath + "/" + path
-  newPath := dirPath + name
+	oldPath := homePath + "/" + path
+	newPath := dirPath + name
 
-  moveFile(oldPath, newPath)
-  err = os.Symlink(newPath, oldPath)
-  if err != nil {
-    fmt.Printf("# [Symlink to the %s at the path: %s ]: %s\n", name, path, color.RedString("Error"))
-  }else {
-    fmt.Printf("# [Symlink to the %s at the path: %s ]: %s\n", name, path, color.GreenString("Done"))
-  }
+	moveFile(oldPath, newPath)
+	err = os.Symlink(newPath, oldPath)
+	if err != nil {
+		fmt.Printf("# [Symlink to the %s at the path: %s ]: %s\n", name, path, color.RedString("Error"))
+	} else {
+		fmt.Printf("# [Symlink to the %s at the path: %s ]: %s\n", name, path, color.GreenString("Done"))
+	}
 }
 
 func moveFile(oldLocation, newLocation string) {
-  err := os.Rename(oldLocation, newLocation)
-  if err != nil {
-    fmt.Println(err)
-  }
+	err := os.Rename(oldLocation, newLocation)
+	if err != nil {
+		fmt.Println(err)
+	}
 }
-

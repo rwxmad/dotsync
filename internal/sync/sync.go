@@ -1,10 +1,10 @@
 package sync
 
 import (
+	"bufio"
 	"fmt"
 	"log"
-  "os"
-  "bufio"
+	"os"
 
 	"github.com/fatih/color"
 	"github.com/go-git/go-git/v5"
@@ -57,8 +57,8 @@ func Add(w *git.Worktree) {
 func Commit(w *git.Worktree, r *git.Repository) {
 	var commitMessage string
 	fmt.Print("Enter commit message: ")
-  inputReader := bufio.NewReader(os.Stdin)
-  commitMessage, _ = inputReader.ReadString('\n')
+	inputReader := bufio.NewReader(os.Stdin)
+	commitMessage, _ = inputReader.ReadString('\n')
 	commit, err := w.Commit(commitMessage, &git.CommitOptions{})
 	if err != nil {
 		log.Fatal(err)
@@ -73,10 +73,9 @@ func Commit(w *git.Worktree, r *git.Repository) {
 }
 
 func Push(r *git.Repository) {
-  authSSH, err := ssh.NewPublicKeysFromFile("git", "/Users/madnesstony/.ssh/id_rsa", "")
+	authSSH, err := ssh.NewPublicKeysFromFile("git", "/Users/madnesstony/.ssh/id_rsa", "")
 	err = r.Push(&git.PushOptions{Auth: authSSH, Progress: os.Stdout})
-  if err != nil {
-    fmt.Println(err)
-  }
+	if err != nil {
+		fmt.Println(err)
+	}
 }
-

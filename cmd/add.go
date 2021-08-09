@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"path/filepath"
-  "strings"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -20,7 +20,7 @@ var addCmd = &cobra.Command{
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		  addFile(args)
+		addFile(args)
 	},
 }
 
@@ -31,20 +31,20 @@ func init() {
 func addFile(files []string) {
 	InitConfig(&cfgFile)
 
-  for _, file := range files {
-	  cfgAbsPath, err := filepath.Abs(file)
-	  if err != nil {
-		  fmt.Println("Error with filepath")
-	  }
+	for _, file := range files {
+		cfgAbsPath, err := filepath.Abs(file)
+		if err != nil {
+			fmt.Println("Error with filepath")
+		}
 
-    pathSlice := strings.Split(cfgAbsPath, "/")
-    pathSlice = append(pathSlice[3:])
-    filePath := strings.Join(pathSlice, "/")
+		pathSlice := strings.Split(cfgAbsPath, "/")
+		pathSlice = append(pathSlice[3:])
+		filePath := strings.Join(pathSlice, "/")
 
-    fileNameSlice := strings.Split(file, "/")
-    fileName := fileNameSlice[len(fileNameSlice) - 1]
+		fileNameSlice := strings.Split(file, "/")
+		fileName := fileNameSlice[len(fileNameSlice)-1]
 
-	  v.Set(fileName, filePath)
-	  v.WriteConfig()
-  }
+		v.Set(fileName, filePath)
+		v.WriteConfig()
+	}
 }
