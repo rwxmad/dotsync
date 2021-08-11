@@ -2,7 +2,7 @@
 
 ### CLI for managing and syncing your dotfiles
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/themadnesstony/dotsync)](https://goreportcard.com/report/github.com/themadnesstony/dotsync)
+[![Go Report Card](https://goreportcard.com/badge/github.com/rwxmad/dotsync)](https://goreportcard.com/report/github.com/rwxmad/dotsync)
 
 ### Commands
 
