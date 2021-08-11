@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -26,8 +25,7 @@ func init() {
 }
 
 var (
-	pathsMap       = make(map[string]string)
-	ErrConfigEmpty = errors.New("Config file is empty")
+	pathsMap = make(map[string]string)
 )
 
 func Store() {
@@ -41,7 +39,7 @@ func getPaths() {
 		log.Fatal("Error while reading configuration file")
 	}
 	if len(pathsMap) == 0 {
-		fmt.Println(ErrConfigEmpty)
+		log.Fatal("Config file is empty")
 	} else {
 		storeFiles()
 	}
@@ -63,15 +61,19 @@ func symlinkFile(name, path string) {
 	oldPath := homePath + "/" + path
 	newPath := dirPath + name
 
-	if _, err := os.Stat(newPath); !os.IsNotExist(err) {
-		fmt.Printf("# [Symlink to the %s at the path: %s ]: %s\n", name, newPath, color.RedString("Exist"))
+	if _, err := os.Stat(oldPath); os.IsNotExist(err) {
+		fmt.Printf("# [File %s at the path: %s ]: %s\n", name, oldPath, color.RedString("Not found"))
 	} else {
-		moveFile(oldPath, newPath)
-		err = os.Symlink(newPath, oldPath)
-		if err != nil {
-			fmt.Printf("# [Symlink to the %s at the path: %s ]: %s\n", name, newPath, color.RedString("Error"))
+		if _, err := os.Stat(newPath); !os.IsNotExist(err) {
+			fmt.Printf("# [Symlink to the %s at the path: %s ]: %s\n", name, newPath, color.CyanString("Exists"))
 		} else {
-			fmt.Printf("# [Symlink to the %s at the path: %s ]: %s\n", name, newPath, color.GreenString("Done"))
+			moveFile(oldPath, newPath)
+			err = os.Symlink(newPath, oldPath)
+			if err != nil {
+				fmt.Printf("# [Symlink to the %s at the path: %s ]: %s\n", name, newPath, color.RedString("Error"))
+			} else {
+				fmt.Printf("# [Symlink to the %s at the path: %s ]: %s\n", name, newPath, color.GreenString("Done"))
+			}
 		}
 	}
 }
