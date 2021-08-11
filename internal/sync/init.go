@@ -15,7 +15,7 @@ func InitGit(path string) {
 	}
 
 	_, err = r.CreateRemote(&config.RemoteConfig{
-		URLs: []string{"git@github.com:themadnesstony/test.git"},
+		URLs: []string{"git@github.com:rwxmad/test.git"},
 		Name: "origin",
 	})
 	if err != nil {

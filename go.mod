@@ -1,4 +1,4 @@
-module github.com/themadnesstony/dotsync
+module github.com/rwxmad/dotsync
 
 go 1.16
 

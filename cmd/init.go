@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/themadnesstony/dotsync/internal/sync"
+	"github.com/rwxmad/dotsync/internal/sync"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"

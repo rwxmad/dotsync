@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/themadnesstony/dotsync/internal/sync"
+	"github.com/rwxmad/dotsync/internal/sync"
 
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
