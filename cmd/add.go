@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
 
@@ -46,5 +47,6 @@ func addFile(files []string) {
 
 		v.Set(fileName, filePath)
 		v.WriteConfig()
+		fmt.Printf("%v was successfully written to the config file \n", color.GreenString(fileName))
 	}
 }

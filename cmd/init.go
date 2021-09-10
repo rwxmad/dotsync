@@ -32,10 +32,12 @@ func init() {
 	rootCmd.AddCommand(initCmd)
 
 	// Define directory for config files
-	home, err := os.UserHomeDir()
+	var err error
+	home, err = os.UserHomeDir()
 	if err != nil {
 		fmt.Println(err)
 	}
+	// FIXME: return default path for home dir
 	dirPath = home + "/code/go/src/dotsync/dotfiles/"
 }
 
@@ -47,8 +49,10 @@ func initCommand() {
 
 func initDir() {
 	if _, err := os.Stat(dirPath); os.IsNotExist(err) {
-		dir := os.Mkdir(dirPath, os.FileMode(0777))
-		fmt.Println(dir)
+		err := os.Mkdir(dirPath, os.FileMode(0777))
+		if err != nil {
+			log.Fatal("Failed to create directory")
+		}
 		fmt.Printf("Directory created at %v", dirPath)
 	} else {
 		var choice string
@@ -74,12 +78,17 @@ func InitConfig(c *string) {
 	v.AddConfigPath(dirPath)
 	v.SetConfigType("yaml")
 	v.SetConfigName(".dotsync")
+
 	if err := v.ReadInConfig(); err == nil {
 		fmt.Fprintln(os.Stderr, "Using config file:", v.ConfigFileUsed())
 	} else {
 		err := v.SafeWriteConfig()
 		if err != nil {
 			fmt.Println("Error with writing config file")
+		}
+		err = v.ReadInConfig()
+		if err != nil {
+			log.Fatal("dotsync configuration file not found, use \"dotsync init\"")
 		}
 	}
 	*c = v.ConfigFileUsed()
