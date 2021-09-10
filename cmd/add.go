@@ -45,8 +45,12 @@ func addFile(files []string) {
 		fileNameSlice := strings.Split(file, "/")
 		fileName := fileNameSlice[len(fileNameSlice)-1]
 
-		v.Set(fileName, filePath)
-		v.WriteConfig()
-		fmt.Printf("%v was successfully written to the config file \n", color.GreenString(fileName))
+		if v.Get(fileName) == nil {
+			v.Set(fileName, filePath)
+			v.WriteConfig()
+			fmt.Printf("# [ %s ] was successfully written to the config file \n", color.GreenString(fileName))
+		} else {
+			fmt.Printf("# [ %s ] is already written to the config file \n", color.CyanString(fileName))
+		}
 	}
 }
