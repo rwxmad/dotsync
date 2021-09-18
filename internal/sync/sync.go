@@ -73,7 +73,10 @@ func Commit(w *git.Worktree, r *git.Repository) {
 }
 
 func Push(r *git.Repository) {
-	authSSH, err := ssh.NewPublicKeysFromFile("git", "/Users/madnesstony/.ssh/id_rsa", "")
+	authSSH, err := ssh.NewPublicKeysFromFile("git", "/Users/rwxmad/.ssh/id_rsa", "")
+	if err != nil {
+		log.Fatal("Error with ssh key")
+	}
 	err = r.Push(&git.PushOptions{Auth: authSSH, Progress: os.Stdout})
 	if err != nil {
 		fmt.Println(err)

@@ -53,7 +53,7 @@ func initDir() {
 		if err != nil {
 			log.Fatal("Failed to create directory")
 		}
-		fmt.Printf("Directory created at %v", dirPath)
+		fmt.Printf("Directory created at %v \n", dirPath)
 	} else {
 		var choice string
 		fmt.Print("Directory already exists, do you want to rewrite? [Y/n] ")
