@@ -4,13 +4,19 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/rwxmad/dotsync)](https://goreportcard.com/report/github.com/rwxmad/dotsync)
 
+### Usage
+```bash
+dotsync [command] [args] [flag] [value]
+```
+
 ### Commands
 
-| Command      | Flags | Arguments | Description |
-| ------------ | ----- | --------- | --------- |
-| dotsync init | - | - |Initialize a directory for dot files and create configuration file with configs list|
-| dotsync add | - | files or paths of files |Adds the specified file to the dotsync config|
-| dotsync store | - | - |Move configuration files to sync folder and create symlinks|
+| Command      | Flags | Value for flag | Arguments | Description |
+| ------------ | ----- | --------- | --------- | ------------ |
+| `init` | - |                |-| Initialize a directory for dotfiles and create configuration file with configs list |
+| `add` | - |  |Paths to files| Adds the specified file to the dotsync config |
+| `store` | - |  |-| Move configuration files to sync folder and create symlinks |
+| `config` | [--git, -g] - show .git/config | - |-| Show and edit .dotsync.yaml, .git/config files |
 
 
 ### Config
